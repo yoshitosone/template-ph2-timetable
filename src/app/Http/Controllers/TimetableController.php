@@ -10,7 +10,7 @@ class TimetableController extends Controller
     public function index()
     {
         // 区間1：月曜日の授業（時限の早い順）[cite: 1]
-        $mondayCourses = DB::select('SELECT period, name, teacher, room FROM courses WHERE day = 1 ORDER BY period;');
+        $mondayCourses = DB::select('SELECT period, name, teacher, room FROM courses WHERE day = ? ORDER BY period;', [1]);
 
         // 区間2：必修科目（科目コードの順）[cite: 1]
         $requiredCourses = DB::select('SELECT name, credits FROM courses WHERE required = true ORDER BY code;');
