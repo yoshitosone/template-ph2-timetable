@@ -5,6 +5,13 @@
     <title>時間割一覧</title>
 </head>
 <body>
+    <div>
+        <span>{{ Auth::user()->name }}さんの時間割</span>
+        <form method="POST" action="/logout" style="display:inline">
+            @csrf
+            <button type="submit">ログアウト</button>
+        </form>
+    </div>
     <h1>時間割一覧</h1>
 
     @if ($entries->isEmpty())

@@ -8,9 +8,9 @@ use App\Models\Course;
 
 class TimetableEntryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $entries = TimetableEntry::with('course')
+        $entries = $request->user()->entries()->with('course')
             ->join('courses', 'timetable_entries.course_id', '=', 'courses.id')
             ->select('timetable_entries.*')
             ->orderBy('courses.day')
@@ -35,7 +35,7 @@ class TimetableEntryController extends Controller
         ]);
         
         $course = Course::find($validated['course_id']);
-        $exists = TimetableEntry::whereHas('course', function ($query) use ($course) {
+        $exists = $request->user()->entries()->whereHas('course', function ($query) use ($course) {
             $query->where('day', $course->day)
                 ->where('period', $course->period);
         })->exists();
@@ -45,6 +45,7 @@ class TimetableEntryController extends Controller
                 ->withInput();
         }
 
+        $validated['user_id'] = $request->user()->id;
         TimetableEntry::create($validated);
 
         return redirect('/entries');
