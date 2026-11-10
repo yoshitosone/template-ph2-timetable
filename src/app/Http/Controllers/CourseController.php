@@ -40,7 +40,7 @@ class CourseController extends Controller
             'body.max' => 'レビューは1000文字以内で入力してください',
         ]);
 
-        $review = $course->reviews()->create([
+        $course->reviews()->create([
             'user_id' => $request->user()->id,
             'body' => $validated['body'],
         ]);
