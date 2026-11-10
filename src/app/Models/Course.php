@@ -12,4 +12,9 @@ class Course extends Model
         return $this->hasMany(TimetableEntry::class);
     }
     public $timestamps = false;
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

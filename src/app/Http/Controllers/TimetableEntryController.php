@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TimetableEntry;
 use App\Models\Course;
+use Illuminate\Support\Facades\Gate;
 
 class TimetableEntryController extends Controller
 {
@@ -54,6 +55,7 @@ class TimetableEntryController extends Controller
     public function destroy($id)
     {
         $entry = TimetableEntry::findOrFail($id);
+        Gate::authorize('delete', $entry);
         $entry->delete();
 
         return redirect('/entries');
