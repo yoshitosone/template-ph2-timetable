@@ -26,4 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/entries', [TimetableEntryController::class, 'store'])->name('entries.store');
     Route::delete('/entries/{id}', [TimetableEntryController::class, 'destroy'])->name('entries.destroy');
     Route::get('/courses', [CourseController::class, 'index']);
+    Route::get('/courses/{course}', [CourseController::class, 'show']);
+    Route::post('/courses/{course}/reviews', [CourseController::class, 'storeReview']);
+    Route::delete('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'destroy']);
 });

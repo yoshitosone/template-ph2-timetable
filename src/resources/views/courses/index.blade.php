@@ -10,6 +10,11 @@
         <p>{{ $message }}</p>
     @enderror
 
+    <form method="GET" action="/courses">
+        <input type="text" name="q" value="{{ $q }}">
+        <button type="submit">検索</button>
+    </form>
+
     <table border="1">
         <thead>
             <tr>
@@ -26,7 +31,7 @@
                 <tr>
                     <td>{{ ['', '月', '火', '水', '木', '金'][$course->day] }}</td>
                     <td>{{ $course->period }}限</td>
-                    <td>{{ $course->name }}</td>
+                    <td><a href="/courses/{{ $course->id }}">{{ $course->name }}</a></td>
                     <td>{{ $course->teacher }}</td>
                     <td>{{ $course->room }}</td>
                     <td>
