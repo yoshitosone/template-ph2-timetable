@@ -42,7 +42,7 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
-        $course->load(['tags', 'users']);
+        $course->load(['tags', 'users', 'materials.course.users']);   // 資料ごとの履修確認で、検索が増えないように先に読む
         $reviews = $course->reviews()->with('user')->latest()->get();
         $announcements = $course->announcements()->orderByDesc('published_at')->get();
         return view('courses.show', ['course' => $course, 'reviews' => $reviews, 'announcements' => $announcements]);
