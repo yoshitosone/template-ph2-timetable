@@ -17,6 +17,11 @@ class Course extends Model
             : self::AUTUMN;
     }
 
+    public function materials()
+    {
+        return $this->hasMany(CourseMaterial::class);
+    }
+
     public function entries()
     {
         return $this->hasMany(TimetableEntry::class);
