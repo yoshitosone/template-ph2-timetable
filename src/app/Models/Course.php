@@ -6,7 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    //
+    public const SPRING = 'spring';
+    public const AUTUMN = 'autumn';
+
+    // 現在の月から、今学期を決める
+    public static function currentSemester(): string
+    {
+        return in_array(now()->month, config('credits.spring_months'))
+            ? self::SPRING
+            : self::AUTUMN;
+    }
+
     public function entries()
     {
         return $this->hasMany(TimetableEntry::class);

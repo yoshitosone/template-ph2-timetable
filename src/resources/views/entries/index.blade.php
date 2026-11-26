@@ -14,6 +14,19 @@
     </div>
     <h1>時間割一覧</h1>
 
+    <h2>今学期の単位（{{ $semester === \App\Models\Course::SPRING ? '春' : '秋' }}学期）</h2>
+    <p>承認済み {{ $approvedCredits }} / {{ $maxCredits }} 単位</p>
+    @if ($isOver)
+        <p style="color: red;"><strong>上限（{{ $maxCredits }}単位）を超えています</strong></p>
+    @endif
+
+    <h3>未履修の必修授業</h3>
+    @forelse ($missingRequired as $course)
+        <p>{{ $course->code }} {{ $course->name }}（{{ $course->credits }}単位／{{ $course->semester === \App\Models\Course::SPRING ? '春' : '秋' }}学期）</p>
+    @empty
+        <p>未履修の必修授業はありません</p>
+    @endforelse
+
     <h2>最近のお知らせ</h2>
     @forelse ($announcements as $announcement)
         <p>{{ $announcement->published_at->format('Y/m/d H:i') }}　【{{ $announcement->course->name }}】{{ $announcement->title }}</p>

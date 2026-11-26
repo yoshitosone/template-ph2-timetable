@@ -27,12 +27,7 @@ class EnrollmentTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $course = new Course();
-        $course->forceFill([
-            'code' => 'T' . uniqid(), 'name' => 'テスト授業', 'teacher' => '先生',
-            'day' => 5, 'period' => 6, 'room' => 'T1', 'credits' => 1,
-            'required' => false, 'capacity' => 2,
-        ])->save();
+        $course = $this->makeCourse();
 
         $this->actingAs($user)->post('/entries', ['course_id' => $course->id]);
 
@@ -51,6 +46,7 @@ class EnrollmentTest extends TestCase
             'code' => 'T' . uniqid(), 'name' => 'テスト授業', 'teacher' => '先生',
             'day' => 5, 'period' => 6, 'room' => 'T1', 'credits' => 1,
             'required' => false, 'capacity' => $capacity,
+            'semester' => Course::AUTUMN,
         ])->save();
         return $course;
     }
