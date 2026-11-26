@@ -79,6 +79,31 @@
         </form>
     @endcan
 
+    @can('admin')
+        <h2>名簿・成績</h2>
+        <p><a href="/admin/courses/{{ $course->id }}/roster">履修者名簿をダウンロード（CSV）</a></p>
+
+        @if (session('status'))
+            <p>{{ session('status') }}</p>
+        @endif
+        @if ($errors->has('csv'))
+            <p>取り込めませんでした。次の行を直して、もう一度アップロードしてください（1行も登録していません）。</p>
+            <ul>
+                @foreach ($errors->get('csv') as $message)
+                    <li>{{ $message }}</li>
+                @endforeach
+            </ul>
+        @endif
+        <form method="POST" action="/admin/courses/{{ $course->id }}/grades" enctype="multipart/form-data">
+            @csrf
+            <input type="file" name="csv_file" accept=".csv,text/csv">
+            @error('csv_file')
+                <p>{{ $message }}</p>
+            @enderror
+            <button type="submit">成績を取り込む</button>
+        </form>
+    @endcan
+
     <h2>レビュー</h2>
     @forelse ($reviews as $review)
         <p>{{ $review->user->name }}: {{ $review->body }}</p>

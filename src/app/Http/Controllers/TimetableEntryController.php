@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\UniqueConstraintViolationException;
 use App\Models\Announcement;
+use App\Models\Grade;
 
 class TimetableEntryController extends Controller
 {
@@ -51,7 +52,11 @@ $announcements = Announcement::whereIn('course_id', $courseIds)
             ->orderBy('code')
             ->get();
 
+        // ログイン中の本人の成績だけを、授業の id で引けるようにする（他人の成績は読まない）
+        $grades = Grade::where('user_id', $request->user()->id)->pluck('grade', 'course_id');   // 1つ目：学生を表す列／2つ目：授業を表す列
+
         return view('entries.index', [
+            'grades' => $grades,
             'entries' => $entries,
             'announcements' => $announcements,
             'semester' => $semester,
