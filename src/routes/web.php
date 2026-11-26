@@ -9,6 +9,8 @@ use App\Http\Controllers\AdminEntryController;
 use App\Http\Controllers\AdminAnnouncementController;
 use App\Http\Controllers\AdminMaterialController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\AdminRosterController;
+use App\Http\Controllers\AdminGradeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,6 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/courses/{course}/announcements/create', [AdminAnnouncementController::class, 'create']);
     Route::post('/courses/{course}/announcements', [AdminAnnouncementController::class, 'store']);
     Route::post('/courses/{course}/materials', [AdminMaterialController::class, 'store']);
+    Route::get('/courses/{course}/roster', [AdminRosterController::class, 'download']);
+    Route::post('/courses/{course}/grades', [AdminGradeController::class, 'store']);
     Route::post('/materials/{material}/replace', [AdminMaterialController::class, 'replace']);
     Route::delete('/materials/{material}', [AdminMaterialController::class, 'destroy']);
 });

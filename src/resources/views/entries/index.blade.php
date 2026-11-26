@@ -51,6 +51,7 @@
                     <th>担当教員</th>
                     <th>教室</th>
                     <th>状態</th>
+                    <th>成績</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -64,6 +65,7 @@
                         <td>{{ $entry->course->teacher }}</td>
                         <td>{{ $entry->course->room }}</td>
                         <td>{{ [\App\Models\TimetableEntry::PENDING => '申請中', \App\Models\TimetableEntry::APPROVED => '承認', \App\Models\TimetableEntry::REJECTED => '却下'][$entry->status] }}</td>
+                        <td>成績：{{ $grades[$entry->course_id] ?? '-' }}</td>
                         <td>
                             @if ($entry->status === \App\Models\TimetableEntry::PENDING)
                                 <form method="POST" action="/entries/{{ $entry->id }}" style="display:inline">
