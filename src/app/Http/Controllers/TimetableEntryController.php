@@ -32,7 +32,34 @@ $announcements = Announcement::whereIn('course_id', $courseIds)
     ->with('course')
     ->get();
 
-        return view('entries.index', ['entries' => $entries, 'announcements' => $announcements]);
+        $semester = Course::currentSemester();
+
+        $approvedCredits = $request->user()->entries()
+            ->where('status', TimetableEntry::APPROVED)
+            ->whereHas('course', fn ($q) => $q->where('semester', $semester))
+            ->with('course')
+            ->get()
+            ->sum(fn ($entry) => $entry->course->credits);
+
+        $maxCredits = config('credits.max');
+        $isOver = $approvedCredits > $maxCredits;
+
+        $missingRequired = Course::where('required', true)
+            ->whereDoesntHave('entries', fn ($q) => $q
+                ->where('user_id', $request->user()->id)
+                ->where('status', TimetableEntry::APPROVED))
+            ->orderBy('code')
+            ->get();
+
+        return view('entries.index', [
+            'entries' => $entries,
+            'announcements' => $announcements,
+            'semester' => $semester,
+            'approvedCredits' => $approvedCredits,
+            'maxCredits' => $maxCredits,
+            'isOver' => $isOver,
+            'missingRequired' => $missingRequired,
+        ]);
     }
 
     public function create()

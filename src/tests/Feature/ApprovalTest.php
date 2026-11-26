@@ -23,6 +23,7 @@ class ApprovalTest extends TestCase
             'code' => 'T' . uniqid(), 'name' => 'テスト授業', 'teacher' => '先生',
             'day' => 5, 'period' => 6, 'room' => 'T1', 'credits' => 1,
             'required' => false, 'capacity' => $capacity,
+            'semester' => Course::AUTUMN,
         ])->save();
         return $course;
     }
